@@ -10,15 +10,19 @@ const app = express();
 app.get('/cam1', (req, res) => {
     const dirPath = path.join('/work/image');
     fs.readdir(dirPath, (e, files) => {
-        const imagePath = path.join(dirPath, files[(files.length - 1)]);
-        fs.readFile(imagePath, (e, d) => {
-            if (e) {
-                res.status(404).send("NotFound");
-            } else {
-                res.type('png');
-                res.status(200).send(d);
-            }
-        });
+        if (!files.length) {
+            res.status(404).send("NotFoundLatestFile")
+        } else {
+            const imagePath = path.join(dirPath, files[(files.length - 1)]);
+            fs.readFile(imagePath, (e, d) => {
+                if (e) {
+                    res.status(404).send("NotFound");
+                } else {
+                    res.type('png');
+                    res.status(200).send(d);
+                }
+            });
+        }
     })
 })
 
