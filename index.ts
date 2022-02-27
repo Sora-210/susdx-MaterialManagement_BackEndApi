@@ -18,7 +18,7 @@ app.get('/cam1', (req, res) => {
                 if (e) {
                     res.status(404).send("NotFound");
                 } else {
-                    res.type('png');
+                    res.type('jpg');
                     res.status(200).send(d);
                 }
             });
@@ -38,12 +38,12 @@ app.get('/cam1/list', (req, res) => {
 
 //時間指定画像取得
 app.get('/cam1/:name', (req, res) => {
-    const imagePath = path.join('/work/image', req.params.name + ".png");
+    const imagePath = path.join('/work/image', req.params.name + ".jpg");
     fs.readFile(imagePath, (e, d) => {
         if (e) {
             res.status(404).send("NotFound");
         } else {
-            res.type('png');
+            res.type('jpg');
             res.status(200).send(d);
         }
     });
