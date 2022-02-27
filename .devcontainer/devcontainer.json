@@ -1,0 +1,14 @@
+{
+	"name": "Node.js & TypeScript",
+	"dockerComposeFile":"docker-compose.yml",
+	"service":"dev",
+	"workspaceFolder":"/work",
+	"settings": {},
+	"extensions": [
+		"dbaeumer.vscode-eslint",
+		"octref.vetur",
+		"mhutchie.git-graph",
+		"ms-vscode.vscode-typescript-next"
+	],
+	"remoteUser": "root"
+}

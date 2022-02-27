@@ -1,0 +1,10 @@
+version: '3'
+services:
+  dev:
+    build: .
+    command: sleep infinity
+    working_dir: /work
+    volumes:
+      - ../:/work:cached
+      - ~/.ssh:/root/.ssh
+      - /work/node_modules
