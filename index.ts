@@ -2,6 +2,7 @@
 import express = require("express")
 import path = require("path");
 import fs = require("fs");
+import glob = require("glob");
 
 //express instance
 const app = express();
@@ -9,7 +10,7 @@ const app = express();
 //最新画像取得
 app.get('/cam1', (req, res) => {
     const dirPath = path.join('/work/image');
-    fs.readdir(dirPath, (e, files) => {
+    glob('*.jpg', {cwd:dirPath} , (e, files) => {
         if (!files.length) {
             res.status(404).send("NotFoundLatestFile")
         } else {
@@ -29,7 +30,7 @@ app.get('/cam1', (req, res) => {
 //画像リストのjson取得
 app.get('/cam1/list', (req, res) => {
     const dirPath = path.join('/work/image');
-    fs.readdir(dirPath, (e, files) => {
+    glob('*.jpg', {cwd:dirPath} , (e, files) => {
         const json = {"count": files.length,"list": files}
 
         res.status(200).json(json);
