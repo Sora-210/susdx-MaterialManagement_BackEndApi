@@ -7,6 +7,12 @@ import glob = require("glob");
 //express instance
 const app = express();
 
+//add cors header
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    next();
+})
+
 //最新画像取得
 app.get('/cam1', (req, res) => {
     const dirPath = path.join('/work/image');
