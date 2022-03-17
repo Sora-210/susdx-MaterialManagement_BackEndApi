@@ -17,6 +17,7 @@ jobs:
           Host server
             HostName 118.27.110.225
             User deploy
+            Port 546
             IdentityFile ~/.ssh/dx_deploy_id_rsa
     - name: Run Deploy Script
       run: |
