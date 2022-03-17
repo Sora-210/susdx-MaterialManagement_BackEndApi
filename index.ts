@@ -42,6 +42,30 @@ app.get('/cam1/list', (req, res) => {
         res.status(200).json(json);
     })
 })
+app.get('/cam1/list/:year', (req, res) => {
+    const dirPath = path.join('/work/image');
+    glob(req.params.year + '-' + '*.jpg', {cwd:dirPath} , (e, files) => {
+        const json = {"count": files.length,"list": files}
+
+        res.status(200).json(json);
+    })
+})
+app.get('/cam1/list/:year/:month', (req, res) => {
+    const dirPath = path.join('/work/image');
+    glob(req.params.year + '-' + req.params.month + '-' + '*.jpg', {cwd:dirPath} , (e, files) => {
+        const json = {"count": files.length,"list": files}
+
+        res.status(200).json(json);
+    })
+})
+app.get('/cam1/list/:year/:month/:day', (req, res) => {
+    const dirPath = path.join('/work/image');
+    glob(req.params.year + '-' + req.params.month + '-' + req.params.day + '-' + '*.jpg', {cwd:dirPath} , (e, files) => {
+        const json = {"count": files.length,"list": files}
+
+        res.status(200).json(json);
+    })
+})
 
 //時間指定画像取得
 app.get('/cam1/:name', (req, res) => {
