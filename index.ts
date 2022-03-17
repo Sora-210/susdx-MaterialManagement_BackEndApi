@@ -67,6 +67,19 @@ app.get('/cam1/list/:year/:month/:day', (req, res) => {
     })
 })
 
+//最新推論結果取得
+app.get('/cam1/inference', (req, res) => {
+    const dirPath = path.join('/work/inference');
+    const list = fs.readdirSync(dirPath, {withFileTypes: true})
+          .filter(dirent => dirent.isFile()).map(({name}) => name)
+          .filter(function(file) 
+          {
+              return path.extname(file).toLowerCase() === '.json';
+          });
+    const json = JSON.parse(fs.readFileSync(path.join(dirPath, "/" + list[list.length - 1]), "utf8"))
+    res.status(200).json(json)
+})
+
 //時間指定画像取得
 app.get('/cam1/:name', (req, res) => {
     const imagePath = path.join('/work/image', req.params.name + ".jpg");
@@ -79,6 +92,8 @@ app.get('/cam1/:name', (req, res) => {
         }
     });
 })
+
+
 
 //その他URLで404ページを返す
 app.get("*", (req, res) => {
