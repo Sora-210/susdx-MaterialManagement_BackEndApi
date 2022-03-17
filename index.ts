@@ -14,7 +14,7 @@ app.get('/cam1', (req, res) => {
         if (!files.length) {
             res.status(404).send("NotFoundLatestFile")
         } else {
-            const imagePath = path.join(dirPath, files[(files.length - 1)]);
+            const imagePath = path.join(dirPath, files[(files.length - 2)]);
             fs.readFile(imagePath, (e, d) => {
                 if (e) {
                     res.status(404).send("NotFound");
