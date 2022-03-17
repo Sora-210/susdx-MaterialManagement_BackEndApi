@@ -9,5 +9,5 @@ RUN /bin/bash &&\
     apt-get -y upgrade &&\
     npm install
 
-CMD npx ts-node index.ts
+CMD npm run serve
 EXPOSE 80
