@@ -4,7 +4,7 @@ import path = require("path");
 import fs = require("fs");
 import glob = require("glob");
 import jwt = require('jsonwebtoken');
-import e = require("express");
+const cors = require('cors');
 
 const privateKey = fs.readFileSync(process.env.privateKeyPath)
 const publicKey = fs.readFileSync(process.env.publicKeyPath)
@@ -15,12 +15,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 
 //add cors header
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'POST, GET');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, authorization');
-    next();
-})
+app.use(cors())
 
 //認証
 function verifyToken(req, res, next) {
