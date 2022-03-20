@@ -6,11 +6,12 @@ services:
     ports:
       - 88:80
     environment:
-      - publicKeyPath
-      - privateKeyPath
+      - publicKeyPath=/work/secret/secret.pem.pub
+      - privateKeyPath=/work/secret/secret.pem
     volumes:
       - /home/cam/Image:/work/image
       - /home/cam/inference:/work/inference
+      - /home/cam/secret:/work/secret
     networks:
       dxNetwork-1:
         ipv4_address: 192.1.1.3
