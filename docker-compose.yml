@@ -5,6 +5,9 @@ services:
     container_name: dx2021_camimage_share_app
     ports:
       - 88:80
+    environment:
+      - publicKeyPath
+      - privateKeyPath
     volumes:
       - /home/cam/Image:/work/image
       - /home/cam/inference:/work/inference
