@@ -3,15 +3,58 @@ import express = require("express")
 import path = require("path");
 import fs = require("fs");
 import glob = require("glob");
+import jwt = require('jsonwebtoken');
+import e = require("express");
+
+const privateKey = fs.readFileSync(process.env.privateKeyPath)
+const publicKey = fs.readFileSync(process.env.publicKeyPath)
 
 //express instance
 const app = express();
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
 
 //add cors header
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     next();
 })
+
+//認証
+function verifyToken(req, res, next) {
+    const authHeader = req.headers["authorization"];
+    if (authHeader !== undefined) {
+        if (authHeader.split(" ")[0] === "Bearer") {
+            try {
+                const token = jwt.verify(authHeader.split(" ")[1], privateKey, {algorithms: 'RS512'});
+                next()
+            } catch (e) {
+                res.status(401).json({message: e.message})
+            }
+        } else {
+            res.status(401).json({message: 'header format error'})
+        }
+    } else {
+        res.status(401).json({message: 'header error'})
+    }
+}
+
+//login
+app.post('/login', (req, res) => {
+    const accountId = req.body.accountId;
+    const password = req.body.password;
+
+    if (accountId === 'sus' && password === 'suwarika') {
+        const token = jwt.sign({ accountId: accountId }, privateKey, { algorithm: 'RS512', expiresIn: '1h'} )
+        res.status(200).json({
+            token: token
+        })
+    } else {
+        res.status(400).json({message: 'error'})
+    }
+})
+
+app.use(verifyToken);
 
 //最新画像取得
 app.get('/cam1', (req, res) => {
