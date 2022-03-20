@@ -35,7 +35,17 @@ function verifyToken(req, res, next) {
             res.status(401).json({message: 'header format error'})
         }
     } else {
-        res.status(401).json({message: 'header error'})
+        const authQuery = req.query.authorization
+        if (authQuery !== undefined) {
+            try {
+                const token = jwt.verify(authQuery, privateKey, {algorithms: 'RS512'});
+                next()
+            } catch (e) {
+                res.status(401).json({message: e.message})
+            }
+        } else {
+            res.status(401).json({message: 'header error'})
+        }
     }
 }
 
