@@ -163,6 +163,19 @@ app.get('/cam1/inference', (req, res) => {
     res.status(200).json(json)
 })
 
+//区画範囲取得
+app.get('/cam1/config/inference', (req, res) => {
+    const dirPath = path.join('/work/inference');
+    const list = fs.readdirSync(dirPath, {withFileTypes: true})
+          .filter(dirent => dirent.isFile()).map(({name}) => name)
+          .filter(function(file) 
+          {
+              return file === 'config.json';
+          });
+    const json = JSON.parse(fs.readFileSync(path.join(dirPath, "/" + list[0]), "utf8"))
+    res.status(200).json(json)
+})
+
 //時間指定画像取得
 app.get('/cam1/:name', (req, res) => {
     const imagePath = path.join('/work/image', req.params.name + ".jpg");
