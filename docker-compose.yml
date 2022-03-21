@@ -12,6 +12,7 @@ services:
       - /home/cam/Image:/work/image
       - /home/cam/inference:/work/inference
       - /home/cam/secret:/work/secret
+      - /home/cam/config:/work/config
     networks:
       dxNetwork-1:
         ipv4_address: 192.1.1.3
