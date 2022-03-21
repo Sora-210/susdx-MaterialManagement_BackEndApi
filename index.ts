@@ -63,6 +63,39 @@ app.post('/login', (req, res) => {
 
 app.use(verifyToken);
 
+//カメラデバイスリスト
+app.get('/list', (req, res) => {
+    let camStatus = false
+    const dirPath = path.join('/work/image');
+    glob('*.jpg', {cwd:dirPath} , (e, files) => {
+        if (!files.length) {
+            res.status(404).send("NotFoundLatestFile")
+        } else {
+            const imagePath = files[(files.length - 2)].split('.')[0].split('-').map(n => Number(n))
+            const lastUpdateDate = new Date(imagePath[0], imagePath[1] - 1, imagePath[2], imagePath[3])
+            const nowDate = new Date(Date.now() - 7200000 + 32400000) 
+            if (lastUpdateDate.valueOf() > nowDate.valueOf()) {
+                camStatus = true
+                console.log(camStatus)
+            }
+            const resJson = [
+                {
+                  deviceName: 'Jetson-1',
+                  redisteredDate: '2022-03-09',
+                  cameraList: [
+                    {
+                      cameraName: 'Camera 1',
+                      status: camStatus,
+                    },
+                  ],
+                },
+            ]
+        
+            res.status(200).json(resJson)
+        }
+    })
+})
+
 //最新画像取得
 app.get('/cam1', (req, res) => {
     const dirPath = path.join('/work/image');
