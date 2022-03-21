@@ -8,3 +8,6 @@ services:
       - ../:/work:cached
       - ~/.ssh:/root/.ssh
       - /work/node_modules
+    environment:
+      - publicKeyPath=/work/secret/secret.pem.pub
+      - privateKeyPath=/work/secret/secret.pem
