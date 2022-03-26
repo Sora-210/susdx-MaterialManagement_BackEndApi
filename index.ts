@@ -3,11 +3,8 @@ import express = require("express")
 import path = require("path");
 import fs = require("fs");
 import glob = require("glob");
-import jwt = require('jsonwebtoken');
 const cors = require('cors');
-
-const privateKey = fs.readFileSync(process.env.privateKeyPath)
-const publicKey = fs.readFileSync(process.env.publicKeyPath)
+import { verifyToken, signToken } from './jwt'
 
 //express instance
 const app = express();
@@ -17,42 +14,13 @@ app.use(express.urlencoded({ extended: true }));
 //add cors header
 app.use(cors())
 
-//認証
-function verifyToken(req, res, next) {
-    const authHeader = req.headers["authorization"];
-    if (authHeader !== undefined) {
-        if (authHeader.split(" ")[0] === "Bearer") {
-            try {
-                const token = jwt.verify(authHeader.split(" ")[1], privateKey, {algorithms: 'RS512'});
-                next()
-            } catch (e) {
-                res.status(401).json({message: e.message})
-            }
-        } else {
-            res.status(401).json({message: 'header format error'})
-        }
-    } else {
-        const authQuery = req.query.authorization
-        if (authQuery !== undefined) {
-            try {
-                const token = jwt.verify(authQuery, privateKey, {algorithms: 'RS512'});
-                next()
-            } catch (e) {
-                res.status(401).json({message: e.message})
-            }
-        } else {
-            res.status(401).json({message: 'header error'})
-        }
-    }
-}
-
 //login
 app.post('/login', (req, res) => {
     const accountId = req.body.accountId;
     const password = req.body.password;
 
     if (accountId === 'sus' && password === 'suwarika') {
-        const token = jwt.sign({ accountId: accountId }, privateKey, { algorithm: 'RS512', expiresIn: '1h'} )
+        const token = signToken(accountId)
         res.status(200).json({
             token: token
         })
@@ -61,6 +29,7 @@ app.post('/login', (req, res) => {
     }
 })
 
+//認証
 app.use(verifyToken);
 
 //カメラデバイスリスト
