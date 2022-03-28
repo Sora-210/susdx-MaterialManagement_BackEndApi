@@ -4,7 +4,7 @@ import path = require("path");
 import fs = require("fs");
 import glob = require("glob");
 const cors = require('cors');
-import { verifyToken, signToken } from './jwt'
+import { verifyToken } from './jwt'
 
 //express instance
 const app = express();
@@ -15,21 +15,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors())
 
 //login
-app.post('/login', (req, res) => {
-    const accountId = req.body.accountId;
-    const password = req.body.password;
+import { LoginRouter } from './Route/Auth'
+app.use('/', LoginRouter)
 
-    if (accountId === 'sus' && password === 'suwarika') {
-        const token = signToken(accountId)
-        res.status(200).json({
-            token: token
-        })
-    } else {
-        res.status(400).json({message: 'error'})
-    }
-})
 
-//認証
+//以下認証必須
 app.use(verifyToken);
 
 //カメラデバイスリスト
