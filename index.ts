@@ -26,26 +26,10 @@ app.use(verifyToken);
 import { ListRouter } from './Route/List'
 app.use('/', ListRouter)
 
+//Image
+import { ImageRouter } from './Route/Image'
+app.use('/', ImageRouter)
 
-//最新画像取得
-app.get('/cam1', (req, res) => {
-    const dirPath = path.join('/work/image');
-    glob('*.jpg', {cwd:dirPath} , (e, files) => {
-        if (!files.length) {
-            res.status(404).send("NotFoundLatestFile")
-        } else {
-            const imagePath = path.join(dirPath, files[(files.length - 2)]);
-            fs.readFile(imagePath, (e, d) => {
-                if (e) {
-                    res.status(404).send("NotFound");
-                } else {
-                    res.type('jpg');
-                    res.status(200).send(d);
-                }
-            });
-        }
-    })
-})
 
 
 //最新推論結果取得
@@ -64,19 +48,6 @@ app.get('/cam1/inference', (req, res) => {
 //区画範囲取得
 import { ConfigRouter } from './Route/Config'
 app.use('/', ConfigRouter)
-
-//時間指定画像取得
-app.get('/cam1/:name', (req, res) => {
-    const imagePath = path.join('/work/image', req.params.name + ".jpg");
-    fs.readFile(imagePath, (e, d) => {
-        if (e) {
-            res.status(404).send("NotFound");
-        } else {
-            res.type('jpg');
-            res.status(200).send(d);
-        }
-    });
-})
 
 
 
