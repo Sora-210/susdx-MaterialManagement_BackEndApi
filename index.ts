@@ -30,20 +30,9 @@ app.use('/', ListRouter)
 import { ImageRouter } from './Route/Image'
 app.use('/', ImageRouter)
 
-
-
-//最新推論結果取得
-app.get('/cam1/inference', (req, res) => {
-    const dirPath = path.join('/work/inference');
-    const list = fs.readdirSync(dirPath, {withFileTypes: true})
-          .filter(dirent => dirent.isFile()).map(({name}) => name)
-          .filter(function(file) 
-          {
-              return path.extname(file).toLowerCase() === '.json';
-          });
-    const json = JSON.parse(fs.readFileSync(path.join(dirPath, "/" + list[list.length - 1]), "utf8"))
-    res.status(200).json(json)
-})
+//Inference
+import { InferenceRouter } from './Route/Inference'
+app.use('/', InferenceRouter)
 
 //区画範囲取得
 import { ConfigRouter } from './Route/Config'
