@@ -38,6 +38,10 @@ ImageRouter.get('/cam1/:name', (req, res) => {
     });
 })
 
+ImageRouter.all('*', (req, res, next) => {
+    next()
+})
+
 export {
     ImageRouter
 }

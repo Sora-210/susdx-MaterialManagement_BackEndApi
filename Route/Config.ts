@@ -16,6 +16,10 @@ ConfigRouter.get('/cam1/config/inference', (req, res) => {
     res.status(200).json(json)
 })
 
+ConfigRouter.all('*', (req, res, next) => {
+    next()
+})
+
 export {
     ConfigRouter
 }
