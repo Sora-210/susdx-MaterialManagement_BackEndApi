@@ -2,20 +2,37 @@ import fs = require("fs");
 import jwt = require('jsonwebtoken');
 
 const privateKey = fs.readFileSync(process.env.privateKeyPath)
-const publicKey = fs.readFileSync(process.env.publicKeyPath)
+// const publicKey = fs.readFileSync(process.env.publicKeyPath)
 
+//Response Message List
+const responseMessageList = {
+    formatError: {
+        status: 'authorizationError',
+        message: 'Header Format Error',
+    },
+    headerError: {
+        status: 'authorizationError',
+        message: 'Header Error',
+    },
+    undefinedError: {
+        status: 'undefinedError',
+        message: 'authorizationUndefinedError'
+    }
+}
+
+//Methods
 const verifyToken = (req, res, next, privateKey) => {
-    const authHeader = req.headers["authorization"];
+    const authHeader = req.headers["authorization"].split(" ");
     if (authHeader !== undefined) {
-        if (authHeader.split(" ")[0] === "Bearer") {
+        if (authHeader[0] === "Bearer") {
             try {
-                const token = jwt.verify(authHeader.split(" ")[1], privateKey, {algorithms: 'RS512'});
+                const token = jwt.verify(authHeader[1], privateKey, {algorithms: 'RS512'});
                 next()
             } catch (e) {
-                res.status(401).json({message: e.message})
+                res.status(401).json(responseMessageList['headerError'])
             }
         } else {
-            res.status(401).json({message: 'header format error'})
+            res.status(401).json(responseMessageList['undefinedError'])
         }
     } else {
         const authQuery = req.query.authorization
@@ -24,10 +41,10 @@ const verifyToken = (req, res, next, privateKey) => {
                 const token = jwt.verify(authQuery, privateKey, {algorithms: 'RS512'});
                 next()
             } catch (e) {
-                res.status(401).json({message: e.message})
+                res.status(401).json(responseMessageList['undefinedError'])
             }
         } else {
-            res.status(401).json({message: 'header error'})
+            res.status(401).json(responseMessageList['headerError'])
         }
     }
 }
