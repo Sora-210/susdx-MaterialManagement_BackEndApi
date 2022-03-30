@@ -41,8 +41,12 @@ app.use('/', ConfigRouter)
 
 
 //その他URLで404ページを返す
+const resMessageNotFound = {
+    status: 'error',
+    message: 'NotFound'
+}
 app.get("*", (req, res) => {
-    res.status(404).send("NotFound");
+    res.status(404).json(resMessageNotFound);
 })
 
 //アプリケーション起動
