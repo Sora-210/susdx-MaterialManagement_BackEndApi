@@ -26,6 +26,7 @@ ListRouter.get('/list', (req, res) => {
                   cameraList: [
                     {
                       cameraName: 'Camera 1',
+                      cameraId: 'cam1',
                       status: camStatus,
                     },
                   ],
@@ -37,7 +38,7 @@ ListRouter.get('/list', (req, res) => {
 })
 
 //画像リストのjson取得
-ListRouter.get('/cam1/list', (req, res) => {
+ListRouter.get('/list/:cameraId', (req, res) => {
     const dirPath = path.join('/work/image');
     glob('*.jpg', {cwd:dirPath} , (e, files) => {
         const json = {"count": files.length,"list": files}
@@ -45,7 +46,7 @@ ListRouter.get('/cam1/list', (req, res) => {
         res.status(200).json(json);
     })
 })
-ListRouter.get('/cam1/list/:year', (req, res) => {
+ListRouter.get('/list/:cameraId/:year', (req, res) => {
     const dirPath = path.join('/work/image');
     glob(req.params.year + '-' + '*.jpg', {cwd:dirPath} , (e, files) => {
         const json = {"count": files.length,"list": files}
@@ -53,7 +54,7 @@ ListRouter.get('/cam1/list/:year', (req, res) => {
         res.status(200).json(json);
     })
 })
-ListRouter.get('/cam1/list/:year/:month', (req, res) => {
+ListRouter.get('/list/:cameraId/:year/:month', (req, res) => {
     const dirPath = path.join('/work/image');
     glob(req.params.year + '-' + req.params.month + '-' + '*.jpg', {cwd:dirPath} , (e, files) => {
         const json = {"count": files.length,"list": files}
@@ -61,7 +62,7 @@ ListRouter.get('/cam1/list/:year/:month', (req, res) => {
         res.status(200).json(json);
     })
 })
-ListRouter.get('/cam1/list/:year/:month/:day', (req, res) => {
+ListRouter.get('/list/:cameraId/:year/:month/:day', (req, res) => {
     const dirPath = path.join('/work/image');
     glob(req.params.year + '-' + req.params.month + '-' + req.params.day + '-' + '*.jpg', {cwd:dirPath} , (e, files) => {
         const json = {"count": files.length,"list": files}
