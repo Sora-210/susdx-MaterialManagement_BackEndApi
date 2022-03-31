@@ -4,7 +4,7 @@ import path = require("path");
 import fs = require("fs");
 const ConfigRouter = Router()
 
-ConfigRouter.get('/cam1/config/inference', (req, res) => {
+ConfigRouter.get('/config/inference/:cameraId', (req, res) => {
     const dirPath = path.join('/work/config');
     const list = fs.readdirSync(dirPath, {withFileTypes: true})
           .filter(dirent => dirent.isFile()).map(({name}) => name)

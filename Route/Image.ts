@@ -6,7 +6,7 @@ const ImageRouter = Router()
 import glob = require("glob");
 
 //最新画像取得
-ImageRouter.get('/cam1', (req, res) => {
+ImageRouter.get('/:cameraId', (req, res) => {
     const dirPath = path.join('/work/image');
     glob('*.jpg', {cwd:dirPath} , (e, files) => {
         if (!files.length) {
@@ -26,7 +26,7 @@ ImageRouter.get('/cam1', (req, res) => {
 })
 
 //時間指定画像取得
-ImageRouter.get('/cam1/:name', (req, res) => {
+ImageRouter.get('/:cameraId/:name', (req, res) => {
     const imagePath = path.join('/work/image', req.params.name + ".jpg");
     fs.readFile(imagePath, (e, d) => {
         if (e) {

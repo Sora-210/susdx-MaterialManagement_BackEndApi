@@ -5,7 +5,7 @@ import fs = require("fs");
 const InferenceRouter = Router()
 
 //最新推論結果取得
-InferenceRouter.get('/cam1/inference', (req, res) => {
+InferenceRouter.get('/inference/:cameraId', (req, res) => {
     const dirPath = path.join('/work/inference');
     const list = fs.readdirSync(dirPath, {withFileTypes: true})
           .filter(dirent => dirent.isFile()).map(({name}) => name)
