@@ -1,8 +1,5 @@
 //Import
 import express = require("express")
-import path = require("path");
-import fs = require("fs");
-import glob = require("glob");
 const cors = require('cors');
 import { verifyToken } from './jwt'
 
@@ -22,22 +19,25 @@ app.use('/', LoginRouter)
 //以下認証必須
 app.use(verifyToken);
 
+//Project
+import { ProjectRouter } from './Route/Project'
+app.use('/', ProjectRouter)
+
 //List
 import { ListRouter } from './Route/List'
-app.use('/', ListRouter)
+app.use('/:projectId/', ListRouter)
 
 //Image
 import { ImageRouter } from './Route/Image'
-app.use('/', ImageRouter)
+app.use('/:projectId/', ImageRouter)
 
 //Inference
 import { InferenceRouter } from './Route/Inference'
-app.use('/', InferenceRouter)
+app.use('/:projectId/', InferenceRouter)
 
 //区画範囲取得
 import { ConfigRouter } from './Route/Config'
-app.use('/', ConfigRouter)
-
+app.use('/:projectId/', ConfigRouter)
 
 
 //その他URLで404ページを返す
