@@ -6,7 +6,7 @@ import glob = require("glob");
 const InferenceRouter = Router()
 
 //最新推論結果
-InferenceRouter.get('/:cameraId', (req, res) => {
+InferenceRouter.get('/:cameraId/latest', (req, res) => {
     const dirPath = path.join('/work/Inference/testProject', req.params.cameraId);
     let fileName:string = "";
     glob('**/**/*.json', {cwd:dirPath} , (e, files) => {
