@@ -9,10 +9,10 @@ services:
       - publicKeyPath=/work/secret/secret.pem.pub
       - privateKeyPath=/work/secret/secret.pem
     volumes:
-      - /home/cam/storage/Image:/work/image
-      - /home/cam/storage/Inference:/work/inference
+      - /home/cam/storage/Image:/work/Image
+      - /home/cam/storage/Inference:/work/Inference
       - /home/cam/secret:/work/secret
-      - /home/cam/storage/Config:/work/config
+      - /home/cam/storage/Config:/work/Config
     networks:
       dxNetwork-1:
         ipv4_address: 192.1.1.3

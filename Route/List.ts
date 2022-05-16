@@ -5,7 +5,7 @@ import fs = require("fs");
 import glob = require("glob");
 const ListRouter = Router()
 
-const rootDirPath = path.join('/work/image');
+const rootDirPath = path.join('/work/Image');
 
 ListRouter.get('/list', (req, res) => {
     let camStatus = true
@@ -25,7 +25,7 @@ ListRouter.get('/list', (req, res) => {
     res.status(200).json(resJson)
 })
 
-//画像リスト�?�json取�?
+//画像リスト�?�json取�?
 ListRouter.get('/list/:cameraId', (req, res) => {
     glob('*', {cwd:path.join(rootDirPath, "testProject", req.params.cameraId)} , (e, files) => {
         const json = {"count": files.length,"list": files}
