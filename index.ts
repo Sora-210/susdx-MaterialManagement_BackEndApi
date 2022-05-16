@@ -1,12 +1,15 @@
 //Import
 import express = require("express")
 const cors = require('cors');
-import { verifyToken } from './jwt'
+import { verifyRouter } from './jwt'
 
-//express instance
+//setting
+process.env.TZ = "Asia/Tokyo";
+
+//create express instance
 const app = express();
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: 2000000 }))
+app.use(express.urlencoded({ limit: 2000000, extended: true }));
 
 //add cors header
 app.use(cors())
@@ -15,9 +18,8 @@ app.use(cors())
 import { LoginRouter } from './Route/Auth'
 app.use('/', LoginRouter)
 
-
-//以下認証必須
-app.use(verifyToken);
+//トークンチェック
+app.use('/', verifyRouter);
 
 //Project
 import { ProjectRouter } from './Route/Project'
@@ -29,18 +31,18 @@ app.use('/:projectId/', ListRouter)
 
 //Image
 import { ImageRouter } from './Route/Image'
-app.use('/:projectId/', ImageRouter)
+app.use('/:projectId/image/', ImageRouter)
 
 //Inference
 import { InferenceRouter } from './Route/Inference'
-app.use('/:projectId/', InferenceRouter)
+app.use('/:projectId/inference/', InferenceRouter)
 
-//区画範囲取得
+//config
 import { ConfigRouter } from './Route/Config'
 app.use('/:projectId/', ConfigRouter)
 
 
-//その他URLで404ページを返す
+//見つからなかった場合404レスポンス
 const resMessageNotFound = {
     status: 'error',
     message: 'NotFound'
