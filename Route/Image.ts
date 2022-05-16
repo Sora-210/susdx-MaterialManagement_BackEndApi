@@ -13,13 +13,13 @@ ImageRouter.post('/', async (req, res) => {
     const time = new Date(req.body.time);
     const cameraId:string = req.body.cameraId
     const b64Image:string = req.body.b64Image;
-    const inference:string = '{"data":["camera' + cameraId + `",` + JSON.stringify(req.body.inference) + "]}";
+    const inference:string = '{"data":[["camera' + cameraId + `",` + JSON.stringify(req.body.inference) + "]]}";
 
     const dirPath = path.join("testProject", cameraId, time.getFullYear().toString(), paddingZero(time.getMonth() + 1).toString());
     const fileName = paddingZero(time.getDate()) + "-" + paddingZero(time.getHours()) + "-" + paddingZero(time.getMinutes());
     
     try {
-        //存在チェック
+        //存在チェ�?ク
         if(
             fs.existsSync(path.join(rootDir, "Image", dirPath, fileName + ".png")) &&
             fs.existsSync(path.join(rootDir, "Inference", dirPath, fileName + ".json"))
@@ -27,13 +27,13 @@ ImageRouter.post('/', async (req, res) => {
             throw new Error("ThereIsAlreadyIt");
         }
 
-        //画像保存
+        //画像保�?
         if(!fs.existsSync(path.join(rootDir, "Image", dirPath))) {
             await fs.mkdirSync(path.join(rootDir, "Image", dirPath), { recursive: true });
         }
         await fs.promises.writeFile(path.join(rootDir, "Image", dirPath, fileName + ".png"), b64Image, { encoding: "base64" });
 
-        //推論保存
+        //推論保�?
         if(!fs.existsSync(path.join(rootDir, "Inference", dirPath))) {
             await fs.mkdirSync(path.join(rootDir, "Inference", dirPath), { recursive: true });
         }
