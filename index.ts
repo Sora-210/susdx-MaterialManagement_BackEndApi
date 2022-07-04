@@ -14,10 +14,6 @@ app.use(express.urlencoded({ limit: 2000000, extended: true }));
 //add cors header
 app.use(cors())
 
-//login
-import { LoginRouter } from './Route/Auth'
-app.use('/', LoginRouter)
-
 //トークンチェック
 app.use('/', verifyRouter);
 
